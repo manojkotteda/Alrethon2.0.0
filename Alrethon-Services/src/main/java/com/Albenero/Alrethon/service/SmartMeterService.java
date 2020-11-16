@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @EnableScheduling
 @Service
@@ -29,29 +30,8 @@ public class SmartMeterService {
         reading.setLongitude(78.471354);
         reading.setTimeStamp(Date.from(Instant.now()));
 
-
-        SmartMeterReading reading2 = new SmartMeterReading();
-        reading2.setDeviceId("DEVICE_2");
-        reading2.setDeviceBattery(100.00);
-        reading2.setEnergyConsumed(0.00);
-        reading2.setLatitude(18.338055);
-        reading2.setLongitude(79.471354);
-        reading2.setTimeStamp(Date.from(Instant.now()));
-
-
-        SmartMeterReading reading3 = new SmartMeterReading();
-        reading3.setDeviceId("DEVICE_3");
-        reading3.setDeviceBattery(100.00);
-        reading3.setEnergyConsumed(0.00);
-        reading3.setLatitude(19.338055);
-        reading3.setLongitude(75.471354);
-        reading3.setTimeStamp(Date.from(Instant.now()));
-
         List<SmartMeterReading> smartMeterReadings = new ArrayList<SmartMeterReading>();
-
         smartMeterReadings.add(reading);
-        smartMeterReadings.add(reading2);
-        smartMeterReadings.add(reading3);
 
         List<SmartMeterReading> result = meterReadingRepo.saveAll(smartMeterReadings);
 
@@ -62,34 +42,28 @@ public class SmartMeterService {
         return meterReadingRepo.findAll();
     }
 
-    @Scheduled(fixedRate = 300000)
+    public List<SmartMeterReading> getReadingsByTime(){
+        return meterReadingRepo.getReadingByTime();
+    }
+
+    @Scheduled(fixedRate = 150000)
     public void meterData(){
 
+
+        Random r = new Random();
+        double randomValue = 1 + 4 * r.nextDouble();
         List<SmartMeterReading> meterReadings = new ArrayList<>();
         List<SmartMeterReading> newMeterReadings = new ArrayList<>();
 
         meterReadings.add(meterReadingRepo.getLateatReadingOfDev1().get(0));
-
-        meterReadings.add(meterReadingRepo.getLateatReadingOfDev2().get(0));
-
-        meterReadings.add(meterReadingRepo.getLateatReadingOfDev3().get(0));
-
         for(SmartMeterReading oldReading:meterReadings){
-
             SmartMeterReading newReading = new SmartMeterReading();
-
             newReading.setDeviceId(oldReading.getDeviceId());
             newReading.setLongitude(oldReading.getLongitude());
             newReading.setLatitude(oldReading.getLatitude());
-            newReading.setDeviceBattery(oldReading.getDeviceBattery());
+            newReading.setDeviceBattery(oldReading.getDeviceBattery()-0.01);
+            newReading.setEnergyConsumed(randomValue);
 
-            if(oldReading.getDeviceId().equals("DEVICE_1")){
-               newReading.setEnergyConsumed(oldReading.getEnergyConsumed()+0.17);
-            }else if(oldReading.getDeviceId().equals("DEVICE_2")){
-                newReading.setEnergyConsumed(oldReading.getEnergyConsumed()+0.11);
-            }else{
-                newReading.setEnergyConsumed(oldReading.getEnergyConsumed()+0.06);
-            }
             newReading.setTimeStamp(Date.from(Instant.now()));
             newMeterReadings.add(newReading);
         }

@@ -28,14 +28,14 @@ export class AreaComponent implements OnInit {
       },xAxis: {
         labels: {
           formatter: function () {
-              return this.value* 1;
+              return this.value*0.01;
           }
       }
         
     },
     yAxis: {
         title: {
-            text: 'Billions'
+            text: 'Watt_hour'
         },
         labels: {
             formatter: function () {
@@ -48,7 +48,7 @@ export class AreaComponent implements OnInit {
       },
       tooltip: {
         split: true,
-        valueSuffix: 'Watt hour'
+        valueSuffix: ' units'
       },
       credits: {
         enabled: false

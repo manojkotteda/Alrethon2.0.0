@@ -4,6 +4,7 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { switchMap, takeUntil, catchError, map } from 'rxjs/operators';
 import { Observable, of, Subject, Subscription, timer } from 'rxjs';
 import { MeterData } from 'src/app/modals/meterData';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,14 +13,26 @@ import { MeterData } from 'src/app/modals/meterData';
 })
 export class DashboardComponent implements OnInit,OnDestroy {
 
+  constructor(private dashboardService: DashboardService,private _route:ActivatedRoute) { 
+
+    this.chartData = this._route.snapshot.data['bigChartResolvedData'];
+
+   
+      this.chartData.data.forEach(ele =>{
+
+        if(ele.deviceId=="DEVICE_1"){
+          this.bigChart[0].data.push(ele.energyConsumed);
+          //console.log("dev1" + ele.energyConsumed)
+        }
+      })
+      console.log(this.bigChart)
+
+  }
+
+  chartData:any;
+
   bigChart = [{
     name: 'DEVICE_1',
-    data: [0,0.1,2]
-  }, {
-    name: 'DEVICE_2',
-    data: []
-  }, {
-    name: 'DEVICE_3',
     data: []
   }];
   cards = [];
@@ -35,8 +48,7 @@ export class DashboardComponent implements OnInit,OnDestroy {
     this.dataSource.sort = this.sort;
   }
 
-  constructor(private dashboardService: DashboardService) { }
-
+  
   ngOnInit() {
     this.cards = this.dashboardService.cards();
     this.dataSource.paginator = this.paginator;
@@ -45,20 +57,6 @@ export class DashboardComponent implements OnInit,OnDestroy {
       switchMap(() => this.dashboardService.getAllMeterData())
     ).subscribe(result => {
       this.dataSource.data = result.data;
-      
-      result.data.forEach(ele =>{
-
-        if(ele.deviceId=="DEVICE_1"){
-          this.bigChart[0].data.push(ele.energyConsumed);
-          //console.log("dev1" + ele.energyConsumed)
-        }else if(ele.deviceId=="DEVICE_2"){
-          this.bigChart[1].data.push(ele.energyConsumed);
-          //console.log("dev2" + ele.energyConsumed)
-        }else{
-          this.bigChart[2].data.push(ele.energyConsumed);
-          //console.log("dev3" + ele.energyConsumed)
-        }
-      })
       console.log(this.bigChart)
     });
   }

@@ -8,6 +8,7 @@ import { MatSidenavModule, MatDividerModule, MatCardModule, MatPaginatorModule, 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DashboardService } from 'src/app/modules/dashboard.service';
 import { HttpClientModule } from '@angular/common/http';
+import { DashboardResolverService } from 'src/app/modules/dashboard-resolver.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatSortModule
   ],
   providers: [
-    DashboardService
+    DashboardService,DashboardResolverService
   ]
 })
 export class DefaultModule { }

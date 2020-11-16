@@ -25,4 +25,8 @@ public class Controller {
     public ResponseTemplate getAllReadings(){
         return new ResponseTemplate(HttpStatus.OK.value(),HttpStatus.OK.toString(),meterService.getAllReadings());
     }
+    @RequestMapping(path = "/getMeterDataByTime",method = RequestMethod.GET)
+    public ResponseTemplate getAllReadingsByTime(){
+        return new ResponseTemplate(HttpStatus.OK.value(),HttpStatus.OK.toString(),meterService.getReadingsByTime());
+    }
 }

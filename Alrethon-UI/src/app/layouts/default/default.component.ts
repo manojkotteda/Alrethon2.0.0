@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DashboardService } from 'src/app/modules/dashboard.service';
 
 @Component({
   selector: 'app-default',
@@ -9,13 +10,21 @@ export class DefaultComponent implements OnInit {
 
   sideBarOpen = true;
 
-  constructor() { }
+  constructor(private dashboardService:DashboardService) { }
 
   ngOnInit() { }
 
 
   sideBarToggler() {
     this.sideBarOpen = !this.sideBarOpen;
+  }
+
+  download(){
+
+    this.dashboardService.getAllMeterData().subscribe(data =>{
+      this.dashboardService.downloadFile(data);
+    })
+
   }
 
 }

@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DefaultComponent } from './layouts/default/default.component';
+import { DashboardResolverService } from './modules/dashboard-resolver.service';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 const routes: Routes = [{
   path: '',
   component: DefaultComponent,
   children: [{
     path: '',
-    component: DashboardComponent
+    component: DashboardComponent,
+    resolve:{bigChartResolvedData : DashboardResolverService}
   }]
 }];
 
