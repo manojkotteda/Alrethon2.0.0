@@ -22,7 +22,4 @@ public interface SmartMeterReadingRepo extends JpaRepository<SmartMeterReading, 
     @Query(value = query2, nativeQuery = true)
     List<SmartMeterReading> getReadingByTime();
 
-
-
-
 }

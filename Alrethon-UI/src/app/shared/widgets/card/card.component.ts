@@ -10,16 +10,19 @@ import HC_exporting from 'highcharts/modules/exporting';
 export class CardComponent implements OnInit {
 
   @Input() label: string;
-  @Input() total: string;
+  @Input() total: string="0";
   @Input() percentage: string;
   @Input() data = [];
 
   Highcharts = Highcharts;
   chartOptions = {};
 
+  consumption:number
+
   constructor() { }
 
   ngOnInit() {
+    this.consumption = +this.total;
     this.chartOptions = {
       chart: {
         type: 'area',

@@ -1,7 +1,9 @@
 package com.Albenero.Alrethon.service;
 
 import com.Albenero.Alrethon.modal.SmartMeterReading;
+import com.Albenero.Alrethon.modal.User;
 import com.Albenero.Alrethon.repository.SmartMeterReadingRepo;
+import com.Albenero.Alrethon.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,6 +21,9 @@ public class SmartMeterService {
 
     @Autowired
     private SmartMeterReadingRepo meterReadingRepo;
+
+    @Autowired
+    private UserRepo userRepo;
 
     public List<SmartMeterReading> initialDbData(){
 
@@ -38,12 +43,36 @@ public class SmartMeterService {
         return result;
     }
 
+    public List<User> initialUser(){
+
+        User user = new User();
+
+        user.setUser_name("manoj");
+        user.setUser_email("manoj@gmail.com");
+        user.setConsumptionThreshold(0.00);
+        user.setBillGenerated(100.00);
+        user.setSmartMeter("DEVICE_1");
+
+        List<User> smartMeterReadings = new ArrayList<User>();
+        smartMeterReadings.add(user);
+
+        List<User> result = userRepo.saveAll(smartMeterReadings);
+
+        return result;
+    }
+
     public List<SmartMeterReading> getAllReadings(){
         return meterReadingRepo.findAll();
     }
 
     public List<SmartMeterReading> getReadingsByTime(){
         return meterReadingRepo.getReadingByTime();
+    }
+
+    public User setUserThreshold(Double treshold) {
+        User user = userRepo.findAll().get(0);
+        user.setConsumptionThreshold(treshold);
+        return userRepo.save(user);
     }
 
     @Scheduled(fixedRate = 150000)

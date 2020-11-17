@@ -28,7 +28,7 @@ export class AreaComponent implements OnInit {
       },xAxis: {
         labels: {
           formatter: function () {
-              return this.value*0.01;
+              return this.value;
           }
       }
         
@@ -39,7 +39,7 @@ export class AreaComponent implements OnInit {
         },
         labels: {
             formatter: function () {
-                return this.value*0.001;
+                return this.value;
             }
         }
     },

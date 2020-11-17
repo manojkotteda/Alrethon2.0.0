@@ -9,18 +9,21 @@
 <br>
 
 <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="stats-cards">
-    <mat-card fxFlex="25">
-        <app-widget-card label="Last 1 Hr" total="12WHr" percentage="50" [data]="cards"></app-widget-card>
+    <mat-card fxFlex="25" [ngClass]="{'warn' : maxConsumprion > 4.15}">
+        <app-widget-card label="MAX of last 10 mins (in Whr)" [total]="maxConsumprion" percentage="50" [data]="cards">
+        </app-widget-card>
     </mat-card>
     <mat-card fxFlex="25">
-        <app-widget-card label="Last 30 mins" total="10WHr" percentage="40" [data]="cards"></app-widget-card>
+        <app-widget-card label="AVG of last 10 mins (in Whr)" [total]="avgConsumption" percentage="30" [data]="cards">
+        </app-widget-card>
     </mat-card>
     <mat-card fxFlex="25">
-        <app-widget-card label="Last 20 mins" total="8WHr" percentage="30" [data]="cards"></app-widget-card>
+        <app-widget-card label="MIN of last 10 mins(in Whr)" [total]="minConsumption" percentage="40" [data]="cards">
+        </app-widget-card>
     </mat-card>
-    <mat-card fxFlex="25">
-        <app-widget-card label="Last 10 mins" total="6WHr" percentage="20" [data]="cards"></app-widget-card>
-    </mat-card>
+    <!-- <mat-card fxFlex="25">
+        <app-widget-card label="Last 10 mins (in Whr)" total="6WHr" percentage="20" [data]="cards"></app-widget-card>
+    </mat-card> -->
 </div>
 
 <br>
@@ -29,7 +32,7 @@
 
 <br>
 
-<div fxLayout="row" fxLayoutAlign="center"  fxLayoutGap="20px">
+<div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
     <div fxFlex="80">
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>

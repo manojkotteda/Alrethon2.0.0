@@ -28,6 +28,8 @@ public class SmartMeterReading implements Serializable {
     @Column
     private Double deviceBattery;
 
+
+
     public SmartMeterReading() {
     }
 
@@ -99,4 +101,6 @@ public class SmartMeterReading implements Serializable {
     public void setDeviceBattery(Double deviceBattery) {
         this.deviceBattery = deviceBattery;
     }
+
+
 }

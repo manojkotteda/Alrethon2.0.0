@@ -34,6 +34,20 @@ export class DashboardService {
     );
   }
 
+  getDataByTime(): Observable<any>{
+    return this._http.get<any>(`${this.host}/getMeterDataByTime`).pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
+  }
+
+  setThreshold(value): Observable<any>{
+    return this._http.get<any>(`${this.host}/setThreshold?threshold=${value}`).pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
+  }
+
   downloadFile(data, filename='data') {
     let csvData = this.ConvertToCSV(data, ['deviceId','energyConsumed', 'timeStamp', 'latitude', 'longitude','deviceBattery']);
     console.log(csvData)

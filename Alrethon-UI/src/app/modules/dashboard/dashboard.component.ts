@@ -11,25 +11,23 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit,OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy {
 
-  constructor(private dashboardService: DashboardService,private _route:ActivatedRoute) { 
+  constructor(private dashboardService: DashboardService, private _route: ActivatedRoute) {
 
     this.chartData = this._route.snapshot.data['bigChartResolvedData'];
 
-   
-      this.chartData.data.forEach(ele =>{
+    this.chartData.data.forEach(ele => {
 
-        if(ele.deviceId=="DEVICE_1"){
-          this.bigChart[0].data.push(ele.energyConsumed);
-          //console.log("dev1" + ele.energyConsumed)
-        }
-      })
-      console.log(this.bigChart)
+      if (ele.deviceId == "DEVICE_1") {
+        this.bigChart[0].data.push(ele.energyConsumed);
+      }
+    })
+    console.log(this.bigChart)
 
   }
 
-  chartData:any;
+  chartData: any;
 
   bigChart = [{
     name: 'DEVICE_1',
@@ -48,24 +46,45 @@ export class DashboardComponent implements OnInit,OnDestroy {
     this.dataSource.sort = this.sort;
   }
 
-  
+  consumptionData=[]
+  maxConsumprion:number=0;
+  minConsumption:number=0;
+  avgConsumption:string="0";
+  dataByTime=[];
+
   ngOnInit() {
     this.cards = this.dashboardService.cards();
     this.dataSource.paginator = this.paginator;
-    
+
     this.subscription = timer(0, 10000).pipe(
       switchMap(() => this.dashboardService.getAllMeterData())
     ).subscribe(result => {
       this.dataSource.data = result.data;
-      console.log(this.bigChart)
+      console.log(this.maxConsumprion)
+    });
+
+    this.subscription1 = timer(0, 10000).pipe(
+      switchMap(() => this.dashboardService.getDataByTime())
+    ).subscribe(result => {
+      this.dataByTime = result.data;
+
+      this.dataByTime.forEach(ele=>{
+       this.consumptionData.push(ele.energyConsumed.toFixed(3));
+      })
+      this.maxConsumprion = Math.max(...this.consumptionData);
+      this.minConsumption = Math.min(...this.consumptionData);
+      this.avgConsumption = ((this.maxConsumprion+this.minConsumption)/2.0).toFixed(3);
+      console.log(this.maxConsumprion)
     });
   }
 
+  subscription1:Subscription;
+
   subscription: Subscription;
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-  
+
 
 
 }
